@@ -1,0 +1,9 @@
+echo on
+read -sv _build_fpga/led_test.v
+hierarchy -top $abstract\led_counter
+write_rtlil
+proc; opt
+techmap; opt
+synth_gowin -json _build_fpga/led_test.json -family gw2a
+clean
+exit

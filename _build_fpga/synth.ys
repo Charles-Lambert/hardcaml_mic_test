@@ -1,0 +1,9 @@
+echo on
+read -sv ../mic_test.v
+hierarchy -top $abstract\top
+write_rtlil
+proc; opt
+techmap; opt
+synth_gowin -json mic_test.json -family gw2a
+clean
+exit

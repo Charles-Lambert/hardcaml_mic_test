@@ -1,0 +1,6 @@
+(library
+ (name tang_ocaml_test_1))
+
+(executable
+ (name hello_world)
+ (modes byte exe))

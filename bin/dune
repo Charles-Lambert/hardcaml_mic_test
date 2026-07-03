@@ -1,0 +1,4 @@
+(executable
+ (public_name tang_ocaml_test_1)
+ (name main)
+ (libraries tang_ocaml_test_1))

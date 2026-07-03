@@ -1,0 +1,8 @@
+lib: [
+  "_build/install/default/lib/tang_ocaml_test_1/META"
+  "_build/install/default/lib/tang_ocaml_test_1/dune-package"
+  "_build/install/default/lib/tang_ocaml_test_1/opam"
+]
+bin: [
+  "_build/install/default/bin/tang_ocaml_test_1"
+]
