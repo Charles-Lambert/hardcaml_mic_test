@@ -1,10 +1,6 @@
-Proof of Concept for using Hardcaml with the Sipeed Tang Nano 20k FPGA. 
+Testing the use of a PDM microphone with the Sipeed Tang Nano 20k and Hardcaml
 
-Counts up to 32 in binary on the 6 onboard LEDs. 
-
-Note that I have never worked with Ocaml or FPGAs before so I am probably doing some things rather suboptimally. 
-
-
+Work in progress. I am new to Ocaml and FPGAs so there are probably things that could be done more idiomatically (e.g. using Dune). 
 
 Requirements (may be incomplete): 
 Hardware: Sipeed Tang Nano 20k, USB-C cable
@@ -25,7 +21,7 @@ $ ocaml blink.ml
 
 $ yosys fpga/synth.ys
 
-$ yowasp-nextpnr-himbaechel-gowin --json _build_fpga/led_test.json --write _build_fpga/pnr_led_test.json --device $DEVICE --vopt family=GW2A-18C --vopt cst=fpga/led_test.cst
+$ yowasp-nextpnr-himbaechel-gowin --json _build_fpga/led_test.json --write _build_fpga/pnr_led_test.json --device $DEVICE --vopt family=GW2A-18C --vopt cst=fpga/mic_test.cst
 
 $ gowin_pack -d GW2A-18C -o _build_fpga/pack.fs _build_fpga/pnr_led_test.json
 
