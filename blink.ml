@@ -20,6 +20,12 @@ let enable_counter =
   ~width:4
   ~f:(mod_counter ~max:(9 - 1))
 
+let sample_hold input ~enable =
+  reg
+  (spec)
+  ~enable:enable input
+
+
 let read_flag = 
   mux2 (enable_counter ==:. 2) gnd vdd
 
@@ -33,6 +39,7 @@ let lpf ~divisor_power input=
     (spec)
     ~enable:read_flag
     ~width:32
+    (* don't really like how the round-to-negative-infinity biases the output *)
     ~f:(fun d -> d +: (Signal.sra (input -: d) divisor_power))
 
 let rectify input = 
@@ -40,21 +47,26 @@ let rectify input =
 
 let invert input = ~: (input)
 
+let divide input ~divisor_power =
+        sra input divisor_power
+
 
 let envelope = 
         pdm_dat 
         |> sresize ~width:2
-        |> centre_amp ~gain:(of_signed_int ~width:8 (64))
+        |> centre_amp ~gain:(of_signed_int ~width:12 (1024))
         |> sresize ~width:32
         |> lpf ~divisor_power:4
         |> rectify
         |> sresize ~width:32
         |> lpf ~divisor_power:16
+        |> divide ~divisor_power:13 (* don't do this like this *)
         |> sresize ~width:6
         |> invert 
 
-(* Advance the LED pattern by one every time enable_flag is set *)
-let display_counter = 
+
+(* Advance the LED pattern by one every time enable_flag is set.*)
+(* let display_counter = 
  reg_fb                               
    (spec) 
    ~enable:vdd
@@ -63,6 +75,7 @@ let display_counter =
 
 let display_flag = 
   mux2 (display_counter ==:. 1) gnd vdd
+  *)
 
 
 (* The hardware is designed such that LEDs light when set to 0. Therefore we must invert the signal*)
@@ -86,4 +99,10 @@ let build_simulator() =
         let pdm_dat_sim = Cyclesim.in_port simulator "pdm_dat" in
         let out = Cyclesim.out_port simulator "leds" in
         (simulator, pdm_dat_sim, out)
+
+let multi_cycle simulator n = 
+        for x=1 to n do
+                Cyclesim.cycle simulator
+        done
+
 

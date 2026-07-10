@@ -12,8 +12,10 @@ module led_counter (
 
     wire [3:0] _11;
     wire _12;
-    wire [31:0] _46;
-    wire [15:0] _56;
+    wire [18:0] _64;
+    wire [4:0] _62;
+    wire [31:0] _45;
+    wire [15:0] _55;
     wire vdd;
     wire [3:0] _20;
     wire [3:0] _9;
@@ -27,47 +29,55 @@ module led_counter (
     wire _21;
     wire _23;
     wire gnd;
-    wire [27:0] _43;
-    wire [5:0] _36;
+    wire [27:0] _42;
     wire [1:0] _28;
     wire [1:0] _26;
     wire [1:0] _27;
     wire [1:0] _29;
-    wire [7:0] _25;
-    wire [9:0] _30;
+    wire [11:0] _25;
+    wire [13:0] _30;
     wire _31;
     wire [1:0] _32;
     wire [3:0] _33;
     wire [7:0] _34;
     wire [15:0] _35;
-    wire [21:0] _37;
+    wire [17:0] _36;
+    wire [31:0] _37;
     wire [31:0] _38;
-    wire [31:0] _39;
-    wire _40;
-    wire [1:0] _41;
-    wire [3:0] _42;
+    wire _39;
+    wire [1:0] _40;
+    wire [3:0] _41;
+    wire [31:0] _43;
     wire [31:0] _44;
-    wire [31:0] _45;
     wire [31:0] _5;
     reg [31:0] _24;
-    wire [63:0] _48;
+    wire [63:0] _47;
+    wire [31:0] _48;
     wire [31:0] _49;
-    wire [31:0] _50;
-    wire _51;
-    wire [1:0] _52;
-    wire [3:0] _53;
-    wire [7:0] _54;
-    wire [15:0] _55;
+    wire _50;
+    wire [1:0] _51;
+    wire [3:0] _52;
+    wire [7:0] _53;
+    wire [15:0] _54;
+    wire [31:0] _56;
     wire [31:0] _57;
-    wire [31:0] _58;
     wire [31:0] _6;
-    reg [31:0] _47;
-    wire [5:0] _59;
-    wire [5:0] _60;
+    reg [31:0] _46;
+    wire _58;
+    wire [1:0] _59;
+    wire [3:0] _60;
+    wire [7:0] _61;
+    wire [12:0] _63;
+    wire [31:0] _65;
+    wire [5:0] _66;
+    wire [5:0] _67;
     assign _11 = 4'b0100;
     assign _12 = _10 < _11;
-    assign _46 = 32'b00000000000000000000000000000000;
-    assign _56 = _50[31:16];
+    assign _64 = _46[31:13];
+    assign _62 = { _60,
+                   _58 };
+    assign _45 = 32'b00000000000000000000000000000000;
+    assign _55 = _49[31:16];
     assign vdd = 1'b1;
     assign _20 = 4'b0010;
     assign _9 = 4'b0000;
@@ -86,17 +96,15 @@ module led_counter (
     assign _21 = _10 == _20;
     assign _23 = _21 ? gnd : vdd;
     assign gnd = 1'b0;
-    assign _43 = _39[31:4];
-    assign _36 = { _33,
-                   _32 };
+    assign _42 = _38[31:4];
     assign _28 = 2'b01;
     assign _26 = { pdm_dat,
                    pdm_dat };
     assign _27 = _26 + _26;
     assign _29 = _27 - _28;
-    assign _25 = 8'b01000000;
+    assign _25 = 12'b010000000000;
     assign _30 = $signed(_25) * $signed(_29);
-    assign _31 = _30[9:9];
+    assign _31 = _30[13:13];
     assign _32 = { _31,
                    _31 };
     assign _33 = { _32,
@@ -105,53 +113,64 @@ module led_counter (
                    _33 };
     assign _35 = { _34,
                    _34 };
-    assign _37 = { _35,
-                   _36 };
-    assign _38 = { _37,
+    assign _36 = { _35,
+                   _32 };
+    assign _37 = { _36,
                    _30 };
-    assign _39 = _38 - _24;
-    assign _40 = _39[31:31];
+    assign _38 = _37 - _24;
+    assign _39 = _38[31:31];
+    assign _40 = { _39,
+                   _39 };
     assign _41 = { _40,
                    _40 };
-    assign _42 = { _41,
-                   _41 };
-    assign _44 = { _42,
-                   _43 };
-    assign _45 = _24 + _44;
-    assign _5 = _45;
+    assign _43 = { _41,
+                   _42 };
+    assign _44 = _24 + _43;
+    assign _5 = _44;
     always @(posedge clock) begin
         if (gnd)
-            _24 <= _46;
+            _24 <= _45;
         else
             if (_23)
                 _24 <= _5;
     end
-    assign _48 = $signed(_24) * $signed(_24);
-    assign _49 = _48[31:0];
-    assign _50 = _49 - _47;
-    assign _51 = _50[31:31];
+    assign _47 = $signed(_24) * $signed(_24);
+    assign _48 = _47[31:0];
+    assign _49 = _48 - _46;
+    assign _50 = _49[31:31];
+    assign _51 = { _50,
+                   _50 };
     assign _52 = { _51,
                    _51 };
     assign _53 = { _52,
                    _52 };
     assign _54 = { _53,
                    _53 };
-    assign _55 = { _54,
-                   _54 };
-    assign _57 = { _55,
-                   _56 };
-    assign _58 = _47 + _57;
-    assign _6 = _58;
+    assign _56 = { _54,
+                   _55 };
+    assign _57 = _46 + _56;
+    assign _6 = _57;
     always @(posedge clock) begin
         if (gnd)
-            _47 <= _46;
+            _46 <= _45;
         else
             if (_23)
-                _47 <= _6;
+                _46 <= _6;
     end
-    assign _59 = _47[5:0];
-    assign _60 = ~ _59;
-    assign leds = _60;
+    assign _58 = _46[31:31];
+    assign _59 = { _58,
+                   _58 };
+    assign _60 = { _59,
+                   _59 };
+    assign _61 = { _60,
+                   _60 };
+    assign _63 = { _61,
+                   _62 };
+    assign _65 = { _63,
+                   _64 };
+    assign _66 = _65[5:0];
+    assign _67 = ~ _66;
+    assign leds = _67;
     assign pdm_clk = _12;
 
 endmodule

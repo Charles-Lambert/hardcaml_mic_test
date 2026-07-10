@@ -3,7 +3,15 @@ Testing the use of a PDM microphone with the Sipeed Tang Nano 20k and Hardcaml
 Work in progress. I am new to Ocaml and FPGAs so there are probably things that could be done more idiomatically (e.g. using Dune). 
 
 Requirements (may be incomplete): 
-Hardware: Sipeed Tang Nano 20k, USB-C cable
+Hardware: Sipeed Tang Nano 20k, USB-C cable, breadboard, PDM mic breakout (3v3 logic level)
+
+Connections between mic and FPGA: 
+
+GND to GND
+3V3 to 3V3
+SEL to GND
+CLK to pin 72
+DAT to pin 71
 
 Ocaml: Oxcaml (5.2.0+ox)
 	Hardcaml
@@ -17,7 +25,13 @@ FPGA: Yosys
 
 Running (all commands to be run from this directory): 
 
-$ ocaml blink.ml
+$ utop
+
+	Then inside the repl, run 
+
+	write_circuit () ;;
+
+	#quit ;;
 
 $ yosys fpga/synth.ys
 
