@@ -50,6 +50,17 @@ let invert input = ~: (input)
 let divide input ~divisor_power =
         sra input divisor_power
 
+(* only display the coutner from time to time *)
+ let display_counter = 
+ reg_fb                               
+   (spec) 
+   ~enable:vdd
+   ~width:24                           
+   ~f:(mod_counter ~max:(2700000 / 2 - 1))
+
+let display_flag = 
+  mux2 (display_counter ==:. 1) vdd gnd
+  
 
 let envelope = 
         pdm_dat 
@@ -59,23 +70,12 @@ let envelope =
         |> lpf ~divisor_power:4
         |> rectify
         |> sresize ~width:32
-        |> lpf ~divisor_power:16
-        |> divide ~divisor_power:13 (* don't do this like this *)
+        |> lpf ~divisor_power:17
+        |> divide ~divisor_power:17 (* don't do this like this *)
         |> sresize ~width:6
         |> invert 
+        |> sample_hold ~enable:display_flag
 
-
-(* Advance the LED pattern by one every time enable_flag is set.*)
-(* let display_counter = 
- reg_fb                               
-   (spec) 
-   ~enable:vdd
-   ~width:24                           
-   ~f:(mod_counter ~max:(27000000 / 2 - 1))
-
-let display_flag = 
-  mux2 (display_counter ==:. 1) gnd vdd
-  *)
 
 
 (* The hardware is designed such that LEDs light when set to 0. Therefore we must invert the signal*)
@@ -104,5 +104,18 @@ let multi_cycle simulator n =
         for x=1 to n do
                 Cyclesim.cycle simulator
         done
+
+let build () =
+        (*Note reversed order. AIUI the order of evaluation is technically undefined. Maybe I should be mapping over a list of commands*)
+        ( 
+        Sys.command "gowin_pack -d GW2A-18C -o _build_fpga/pack.fs _build_fpga/pnr_led_test.json",
+        Sys.command "yowasp-nextpnr-himbaechel-gowin --json _build_fpga/led_test.json --write _build_fpga/pnr_led_test.json --device $DEVICE --vopt family=GW2A-18C --vopt cst=fpga/mic_test.cst",
+        Sys.command "yosys fpga/synth.ys"
+)
+        
+
+let flash() = Sys.command "openFPGALoader _build_fpga/pack.fs"
+
+let build_and_flash () = (flash(), build(), write_circuit())
 
 
