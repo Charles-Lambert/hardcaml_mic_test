@@ -6,4 +6,3 @@ proc; opt
 techmap; opt
 synth_gowin -json _build_fpga/led_test.json -family gw2a
 clean
-exit
