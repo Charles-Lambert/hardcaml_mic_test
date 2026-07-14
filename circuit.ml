@@ -101,7 +101,7 @@ let output_leds = Hardcaml.Signal.output "leds" (envelope)
 
 let led_circuit = Hardcaml.Circuit.create_exn ~name:"led_counter" [output_leds; pdm_clk]
 
-let print_circuit () = Hardcaml.Rtl.print Verilog led_circuit
+(* let print_circuit () = Hardcaml.Rtl.print Verilog led_circuit
 
 let verilog_string = Hardcaml.Rtl.full_hierarchy (Hardcaml.Rtl.create Verilog [led_circuit]) |> Rope.to_string
 
@@ -131,4 +131,4 @@ let flash() = Sys.command "openFPGALoader _build_fpga/pack.fs" == 0
 
 let build_and_flash () = (build() && flash(), write_circuit())
 
-
+*)
